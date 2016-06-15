@@ -2,7 +2,7 @@
 
 class I2Ccomm{
     public function sendTest($addr = 0x34){
-        return $this->read(2, 0x50, 1);
+        return $this->read('i2c-2', 0x50, 1);
     }
     public function detect_devices($bus){
         
@@ -36,11 +36,11 @@ class I2Ccomm{
         }
         return $adapters;
     }
-    public function read($bus, $addr, $data, $length){
+    public function read($bus, $addr, $data, $length=1){
         $address = ($addr | 0x01) << 8 & 1;
         $file = "/dev/$bus";
         $i2c  = fopen($file, 'r');
-        fseek($i2c, $w*$a);
+        fseek($i2c, 8*$a);
         $data = fread($i2c, $length);
         return $data;
     }
