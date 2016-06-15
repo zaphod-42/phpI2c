@@ -2,31 +2,7 @@
 
 class I2Ccomm{
     public function sendTest($addr = 0x34){
-        $rtn = "Failed\n";
-        $address = ($addr | 0x01) << 8 & 1;
-        if($i2c = fopen("/dev/i2c-0", "r+")){
-            $int = 0;
-            $length = 0;
-            echo "file opened \n";
-            while(!feof($i2c)){
-                $contents = fread($i2c, 8192);
-                $int++;
-                echo $contents;
-                $length+=strlen($contents);
-                if($length > $addr){
-                    echo "should be here \n";
-                }
-                if($int == 100) return "Overflow";
-                $rtn.="$contents \n";
-            }
-            echo $length.' '.$int;
-            // //fseek($i2c, $address);
-            // $rtn = fread($i2c, 1);
-            // fclose($i2c);
-        }else{
-            echo "failed to open file\n";
-        };
-        return $rtn;
+        return $this->read(2, 0x50, 1);
     }
     public function detect_devices($bus){
         
@@ -60,4 +36,21 @@ class I2Ccomm{
         }
         return $adapters;
     }
+    public function read($bus, $addr, $data, $length){
+        $address = ($addr | 0x01) << 8 & 1;
+        $file = "/dev/$bus";
+        $i2c  = fopen($file, 'r');
+        fseek($i2c, $w*$a);
+        $data = fread($i2c, $length);
+        return $data;
+    }
+    public function i2c_send($bus,$addr,$data) { //$a<0 - use raw read/write
+        $address = ($addr | 0x01) << 8 & 0;
+        $file = "/dev/$bus";
+        $i2c  = fopen($file, 'w');
+        fseek($i2c, $address);
+        $res=fwrite($i2c, chr($d));
+        fclose($i2c);
+        return $res;
+    } // end of i2c_send()
 }
