@@ -19,7 +19,7 @@ class I2Ccomm{
                 if($int == 100) return "Overflow";
                 $rtn.="$contents \n";
             }
-            echo $length;
+            echo $length.' '.$int;
             // //fseek($i2c, $address);
             // $rtn = fread($i2c, 1);
             // fclose($i2c);
