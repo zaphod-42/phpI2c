@@ -9,7 +9,7 @@ class I2Ccomm{
             $length = 0;
             echo "file opened \n";
             while(!feof($i2c)){
-                $contents = fread($handle, 8192);
+                $contents = fread($i2c, 8192);
                 $int++;
                 echo $contents;
                 $length+=strlen($contents);
