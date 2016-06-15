@@ -8,16 +8,16 @@ class I2Ccomm{
             $int = 0;
             $length = 0;
             echo "file opened \n";
-            while(($b = stream_get_line($i2c)) !== false){
+            while(!feof($i2c)){
+                $contents = fread($handle, 8192);
                 $int++;
-                echo $b;
-                $length+=strlen($b);
+                echo $contents;
+                $length+=strlen($contents);
                 if($length > $addr){
                     echo "should be here \n";
-                    echo($b);
                 }
                 if($int == 100) return "Overflow";
-                $rtn.="$b \n";
+                $rtn.="$contents \n";
             }
             echo $length;
             // //fseek($i2c, $address);
