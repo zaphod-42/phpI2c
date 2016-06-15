@@ -1,13 +1,18 @@
 <?php
 
 class I2Ccomm{
-    public function detect($bus){
+    public function sendTest(){
+        $address = ($address | 0x34) << 8 & 0;
+        $i2c = fopen("/dev/i2c-0", "w+b");
+        fseek($i2c, $address);
+        $rtn = fread($i2c, 1);
+        fclose($i2c);
+        return $rtn;
+    }
+    public function detect_devices($bus){
         
     }
     public function list_busses(){
-        return $this->gather_busses();
-    }
-    public function gather_busses(){
         $adapters = array();
         if (($h = fopen("/proc/bus/i2c", "r"))) {
             print('/proc/bus/i2c exists, need to handle this case');
@@ -28,7 +33,7 @@ class I2Ccomm{
                 if($files = scandir($dir)){
                     foreach($files as $file){
                         if($file[0] != '.'){
-                            $adapters[$file] = file_get_contents($dir.'/'.$file);
+                            $adapters[$file] = trim(file_get_contents($dir.'/'.$file.'/name'));
                         }
                     }
                 }
