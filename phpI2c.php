@@ -7,6 +7,7 @@ class I2Ccomm{
         if($i2c = fopen("/dev/i2c-0", "r+")){
             $int = 0;
             $length = 0;
+            echo "file opened \n";
             while(($b = fgets($i2c)) !== false){
                 $int++;
                 $length+=strlen($b);
@@ -22,7 +23,7 @@ class I2Ccomm{
             // $rtn = fread($i2c, 1);
             // fclose($i2c);
         }else{
-            echo "failed to open file";
+            echo "failed to open file\n";
         };
         return $rtn;
     }
@@ -31,7 +32,7 @@ class I2Ccomm{
     }
     public function list_busses(){
         $adapters = array();
-        if (($h = &fopen("/proc/bus/i2c", "r"))) {
+        if (($h = @fopen("/proc/bus/i2c", "r"))) {
             print('/proc/bus/i2c exists, need to handle this case');
             fclose($h);
         }
