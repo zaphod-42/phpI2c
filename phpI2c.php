@@ -4,7 +4,7 @@ class I2Ccomm{
     public function sendTest($addr = 0x34){
         $rtn = "Failed";
         $address = ($addr | 0x01) << 8 & 1;
-        if($i2c = fopen("/dev/i2c-0", "r")){
+        if($i2c = fopen("/dev/i2c-0", "r+")){
             $int = 0;
             $length = 0;
             while(($b = fgets($i2c)) !== false){
@@ -21,6 +21,8 @@ class I2Ccomm{
             // //fseek($i2c, $address);
             // $rtn = fread($i2c, 1);
             // fclose($i2c);
+        }else{
+            echo "failed to open file";
         };
         return $rtn;
     }
@@ -29,7 +31,7 @@ class I2Ccomm{
     }
     public function list_busses(){
         $adapters = array();
-        if (($h = fopen("/proc/bus/i2c", "r"))) {
+        if (($h = &fopen("/proc/bus/i2c", "r"))) {
             print('/proc/bus/i2c exists, need to handle this case');
             fclose($h);
         }
