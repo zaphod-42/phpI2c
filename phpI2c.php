@@ -10,6 +10,7 @@ class I2Ccomm{
             echo "file opened \n";
             while(($b = fgets($i2c)) !== false){
                 $int++;
+                echo $b;
                 $length+=strlen($b);
                 if($length > $addr){
                     echo "should be here \n";
