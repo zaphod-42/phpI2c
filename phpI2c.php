@@ -2,13 +2,13 @@
 
 class I2Ccomm{
     public function sendTest($addr = 0x34){
-        $rtn = "Failed";
+        $rtn = "Failed\n";
         $address = ($addr | 0x01) << 8 & 1;
         if($i2c = fopen("/dev/i2c-0", "r+")){
             $int = 0;
             $length = 0;
             echo "file opened \n";
-            while(($b = fgets($i2c)) !== false){
+            while(($b = stream_get_line($i2c)) !== false){
                 $int++;
                 echo $b;
                 $length+=strlen($b);
