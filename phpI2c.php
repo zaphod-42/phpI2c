@@ -1,16 +1,23 @@
 <?php
 
 class I2Ccomm{
-    public function sendTest(){
+    public function sendTest($addr = 0x34){
         $rtn = "Failed";
-        $address = (0x34 | 0x01) << 8 & 0;
+        $address = ($addr | 0x01) << 8 & 1;
         if($i2c = fopen("/dev/i2c-0", "w+b")){
             $int = 0;
+            $length = 0;
             while($b = fgets($i2c)){
                 $int++;
+                $length+=strlen($b);
+                if($length > $addr){
+                    echo "should be here \n";
+                    echo($b);
+                }
                 if($int == 100) return "Overflow";
                 $rtn.="$b \n";
             }
+            echo $length;
             // //fseek($i2c, $address);
             // $rtn = fread($i2c, 1);
             // fclose($i2c);
