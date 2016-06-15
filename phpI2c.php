@@ -4,10 +4,10 @@ class I2Ccomm{
     public function sendTest($addr = 0x34){
         $rtn = "Failed";
         $address = ($addr | 0x01) << 8 & 1;
-        if($i2c = fopen("/dev/i2c-0", "w+b")){
+        if($i2c = fopen("/dev/i2c-0", "r")){
             $int = 0;
             $length = 0;
-            while($b = fgets($i2c)){
+            while(($b = fgets($i2c)) !== false){
                 $int++;
                 $length+=strlen($b);
                 if($length > $addr){
