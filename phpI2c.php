@@ -5,9 +5,15 @@ class I2Ccomm{
         $rtn = "Failed";
         $address = (0x34 | 0x01) << 8 & 0;
         if($i2c = fopen("/dev/i2c-0", "w+b")){
-            fseek($i2c, $address);
-            $rtn = fread($i2c, 1);
-            fclose($i2c);
+            $int = 0;
+            while($b = fgets($i2c)){
+                $int++;
+                if($int == 100) return "Overflow";
+                $rtn.="$b \n";
+            }
+            // //fseek($i2c, $address);
+            // $rtn = fread($i2c, 1);
+            // fclose($i2c);
         };
         return $rtn;
     }
