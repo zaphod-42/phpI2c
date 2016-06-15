@@ -38,9 +38,10 @@ class I2Ccomm{
     }
     public function read($bus, $addr, $data, $length=1){
         $address = ($addr | 0x01) << 8 & 1;
+        echo "$address \n";
         $file = "/dev/$bus";
         $i2c  = fopen($file, 'r');
-        fseek($i2c, 8*$a);
+        fseek($i2c, 8*$address);
         $data = fread($i2c, $length);
         return $data;
     }
