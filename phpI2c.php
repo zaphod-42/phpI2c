@@ -10,7 +10,7 @@ class I2Ccomm{
     public function gather_busses(){
         $adapters = array();
         if (($h = fopen("/proc/bus/i2c", "r"))) {
-            print_f('/proc/bus/i2c exists, need to handle this case');
+            print('/proc/bus/i2c exists, need to handle this case');
             fclose($h);
         }
         if ($h = fopen("/proc/mounts", "r")) {
@@ -24,10 +24,11 @@ class I2Ccomm{
             }
             fclose($h);
             if($sysfs){
-                if($files = scandir($sysfs.'/class/i2c-dev')){
+                $dir = $sysfs.'/class/i2c-dev';
+                if($files = scandir($dir)){
                     foreach($files as $file){
                         if($file[0] != '.'){
-                            $adapters[substr($file, strrpos($file, '/')+1)] = file_get_contents($file);
+                            $adapters[$file] = file_get_contents($dir.'/'.$file);
                         }
                     }
                 }
