@@ -2,11 +2,13 @@
 
 class I2Ccomm{
     public function sendTest(){
-        $address = ($address | 0x34) << 8 & 0;
-        $i2c = fopen("/dev/i2c-0", "w+b");
-        fseek($i2c, $address);
-        $rtn = fread($i2c, 1);
-        fclose($i2c);
+        $rtn = "Failed";
+        $address = (0x34 | 0x01) << 8 & 0;
+        if($i2c = fopen("/dev/i2c-0", "w+b")){
+            fseek($i2c, $address);
+            $rtn = fread($i2c, 1);
+            fclose($i2c);
+        };
         return $rtn;
     }
     public function detect_devices($bus){
